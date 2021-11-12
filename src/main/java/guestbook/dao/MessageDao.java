@@ -56,11 +56,11 @@ public class MessageDao {
 		}
 	}
 	
-	public int seelctCount(Connection conn) throws SQLException {
+	public int selectCount(Connection conn) throws SQLException {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			String sql = "select conut(*) from guest_book ";
+			String sql = "select count(*) from guestbook_message ";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			rs.next();
@@ -76,7 +76,7 @@ public class MessageDao {
 		ResultSet rs = null;
 		try {
 			String sql = "select * from guestbook_message"
-					+ "order by message_id desc limit ?, ?";
+					+ " order by message_id desc limit ?,?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, firstRow-1);
 			pstmt.setInt(2, endRow-firstRow+1);
@@ -96,10 +96,10 @@ public class MessageDao {
 		}
 	}
 	
-	private int delete(Connection conn, int message_id) throws SQLException {
+	public int delete(Connection conn, int message_id) throws SQLException {
 		PreparedStatement pstmt = null;
 		try {
-			String sql = "delet from guestbook_message where message_id = ?";
+			String sql = "delete from guestbook_message where message_id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, message_id);
 			return pstmt.executeUpdate();

@@ -20,7 +20,14 @@ public class DBCPInit extends HttpServlet {
 		loadJDBCDriver();
 		initConnectionPool();
 	}
-
+	
+	private void loadJDBCDriver() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("fail to load JDBC Driver", e);
+		}
+	}
 	private void initConnectionPool() {
 		try {
 			String tableName = "guestbook";
@@ -44,20 +51,11 @@ public class DBCPInit extends HttpServlet {
 			poolableConnectionFactory.setPool(connectionPool);
 			
 			Class.forName("org.apache.commons.dbcp2.PoolingDriver");
-			PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apahe:commons:dbcp:");
-			driver.registerPool("jspstudy", connectionPool);
+			PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:");
+			driver.registerPool(tableName, connectionPool);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		
-	}
-
-	private void loadJDBCDriver() {
-		try {
-			Class.forName("com.mysql.jdb.Driver");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("fail to load JDBC Driver", e);
-		}
-	}
-	
+	}	
 }
